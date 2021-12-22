@@ -1,0 +1,28 @@
+#!/bin/bash
+
+case "$1" in 
+start)
+  /usr/bin/awklog.sh &
+  echo $!>/var/run/awklog.pid
+  ;;
+stop)
+  kill `cat /var/run/awklog.pid`
+  rm /var/run/awklog.pid
+  ;;
+restart)
+  $0 stop
+  $0 start
+  ;;
+status)
+  if [ -e /var/run/awklog.pid ]; then
+    echo awklog.sh is running, pid=`cat /var/run/awklog.pid`
+  else
+    echo awklog.sh is NOT running
+    exit 1
+  fi
+  ;;
+*)
+  echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0 

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="rpp" content="6">
+
+  <title>Easily Accessible Servers Logs</title>
+  <meta name="description" content="AwkLog offers real estate seller's agent leads that convert to a successful close.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="/css/welcome.css">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+
+</head>
+<body>
+  <div id="app">
+    <section class="hero is-fullheight is-light" >
+      <div class="hero-head">
+        <nav class="navbar is-fixed-top is-spaced" style="-webkit-backdrop-filter: saturate(180%) blur(5px); backdrop-filter: saturate(180%) blur(5px); background-color: rgba(255, 255, 255, 0.8); padding: 5px 0;" role="navigation" aria-label="main navigation">
+          <div class="container" style="padding-bottom: 0;">
+            <div class="navbar-brand" style="width: 100%;">
+              <a class="navbar-item" style="padding: 0 0.75rem;" href="/">
+                <img src="/img/log.svg" style="max-height: 5rem;">
+                <span style="font-size: 26px; font-weight: bold;">AwkLog</span>
+              </a>
+
+
+              <a style="margin-top: auto; margin-bottom: auto; margin-left: auto; margin-right: 5px;" href="https://help.awklog.com/docs/installation/" role="button" class="pull-right">
+                Installation
+              </a>
+              <a style="margin-top: auto; margin-bottom: auto; margin-left: 20px; margin-right: 5px;" href="/pricing" role="button" class="pull-right">
+                Pricing
+              </a>
+              <a style="margin-top: auto; margin-bottom: auto; margin-left: 20px; margin-right: 5px;" href="https://help.awklog.com/" role="button" class="pull-right">
+                Documentation
+              </a>
+              <a style="margin-top: auto; margin-bottom: auto; margin-left: 20px; margin-right: 5px;" href="/start" role="button" class="pull-right button is-medium is-shadowy is-primary">
+                Sign up
+              </a>
+              <!-- <a style="margin-top: auto; margin-bottom: auto;" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarTopMain">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a> -->
+            </div>
+            <div style="display: none;" class="navbar-menu" id="navbarTopMain">
+              <div class="navbar-end">
+              <!-- <a href="/login" class="navbar-item has-text-weight-semibold">Login</a> -->
+              <div class="navbar-item">
+                <!-- <a href="/users/auth/google_oauth2">
+                  <img style="max-height: 3em" src="/img/btn_google_signin_dark_normal_web@2x.png">
+                </a> -->
+                <a href="/start" class="button is-medium is-shadowy is-primary">
+                  Sign up
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <%= yield %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <footer class="hero is-small is-dark">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <div class="m-t-30 p-t-30 has-text-grey-light is-size-7">
+          AwkLog <%= Time.now.year %> &copy; <br> <a href="/terms" class="has-text-primary">Terms of use</a> and <a class="has-text-primary" href="/privacy">Privacy policy</a>.
+          <!-- <a href="mailto:support@AwkLog.com" class="has-text-primary" target="_blank">Contact us</a> |  -->
+          <a href="https://help.awklog.com" class="has-text-primary">Help</a> | 
+          <a href="/login" class="has-text-primary">Login</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Get all "navbar-burger" elements
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+        // Check if there are any navbar burgers
+        if ($navbarBurgers.length > 0) {
+
+            // Add a click event on each of them
+            $navbarBurgers.forEach( el => {
+                el.addEventListener('click', () => {
+
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+
+                });
+            });
+        }
+
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+<!-- Channel Plugin Scripts -->
+<script>
+  (function() {
+    var w = window;
+    if (w.ChannelIO) {
+      return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
+    }
+    var ch = function() {
+      ch.c(arguments);
+    };
+    ch.q = [];
+    ch.c = function(args) {
+      ch.q.push(args);
+    };
+    w.ChannelIO = ch;
+    function l() {
+      if (w.ChannelIOInitialized) {
+        return;
+      }
+      w.ChannelIOInitialized = true;
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+      s.charset = 'UTF-8';
+      var x = document.getElementsByTagName('script')[0];
+      x.parentNode.insertBefore(s, x);
+    }
+    if (document.readyState === 'complete') {
+      l();
+    } else if (window.attachEvent) {
+      window.attachEvent('onload', l);
+    } else {
+      window.addEventListener('DOMContentLoaded', l, false);
+      window.addEventListener('load', l, false);
+    }
+  })();
+  ChannelIO('boot', {
+    "pluginKey": ""
+  });
+</script>
+<!-- End Channel Plugin -->
+
+</body>
+</html>

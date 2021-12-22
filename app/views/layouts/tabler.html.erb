@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="description" content="<%= yield(:description) %>" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <!-- Generated: 2019-04-04 16:55:45 +0200 -->
+    <title><%= content_for?(:title) ? yield(:title) : 'Easily Accessible Servers Logs' %></title>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
+    <script src="/statics/js/require.min.js"></script>
+    <script>
+      requirejs.config({
+          baseUrl: '.'
+      });
+    </script>
+    <!-- Dashboard Core -->
+    <link href="/css/dashboard.css" rel="stylesheet" />
+    <script src="/statics/js/dashboard.js"></script>
+    <!-- c3.js Charts Plugin -->
+    <link href="/statics/plugins/charts-c3/plugin.css" rel="stylesheet" />
+    <script src="/statics/plugins/charts-c3/plugin.js"></script>
+    <!-- Google Maps Plugin -->
+    <link href="/statics/plugins/maps-google/plugin.css" rel="stylesheet" />
+    <script src="/statics/plugins/maps-google/plugin.js"></script>
+    <!-- Input Mask Plugin -->
+    <script src="/statics/plugins/input-mask/plugin.js"></script>
+    <!-- Datatables Plugin -->
+    <script src="/statics/plugins/datatables/plugin.js"></script>
+  </head>
+  <body>
+
+    <div class="page">
+      <div class="<%= current_user ? 'flex-fill' : 'page-single' %>">
+        <%= yield %>
+      </div>
+    </div>
+
+    <% if request.original_url !~ /users/ && request.original_url !~ /location/ %>
+    <% end %>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-');
+    </script>
+
+    <script>
+      window.intercomSettings = {
+        app_id: ""
+      };
+    </script>
+
+    <script>//(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/xknljuh8';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+
+  </body>
+</html>
+
+
+
+

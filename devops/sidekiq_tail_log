@@ -1,0 +1,1 @@
+devops/worker "tail -f sidekiq.log run.log -n 200"

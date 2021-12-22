@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export PATH=$PATH:/usr/local/bin:/home/soheil/.rvm/rubies/ruby-2.5.1/bin
+# exit 0
+# ./crawl/kill
+# RAILS_ENV=production bundle
+
+[ "$(ps aux|grep "sidekiq -d"|grep -v grep)" ] && exit 0
+## echo "starting sidekiq..."
+
+run() {
+  [ -z "$(ps aux|grep "of $2 "|grep -v grep)" ] && RAILS_ENV=production bundle exec sidekiq -d $1 -c $2 -L ~/sidekiq.log 2>&1
+}
+
+run '-q default', 1

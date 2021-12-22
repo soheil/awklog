@@ -1,0 +1,33 @@
+#!/bin/bash
+
+ctrl_c() { pkill ruby; exit; }
+trap ctrl_c INT
+
+cd awklog
+source ~/.rvm/scripts/rvm
+export PATH=$PATH:/usr/local/bin
+# if an arg is passed in (the case when worker starts in crontab -e)
+# then update to the latest git version and rerun the script.
+# if [ $# -gt 0 ]; then
+#   git pull
+#   bundle 2>&1
+#   ./crawl/run
+#   exit
+# fi
+
+while true; do
+  truncate -s 0 ~/awklog/log/production.log
+  find . -not -path './awklog/*' -type f -name 'sidekiq.log' -size 2097152c -print | xargs truncate --size 0 2>/dev/null
+  ./crawl/start_sidek
+  sleep 20
+done
+
+# ./crawl/start_sidek
+
+
+# while true
+# do
+#   echo "starting..."
+#   parallel --lb -j 10 ruby crawl/zillow.rb ::: {1..10}
+#   sleep 20
+# done

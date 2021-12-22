@@ -1,0 +1,221 @@
+<link rel="stylesheet" href="/css/json-viewer.css" />
+<script src="/js/json-viewer.js"></script>
+<script src='/js/plotly-latest.min.js'></script>
+
+<% if current_user.is_admin? %>
+  <table style="margin-left: 20px;">
+    <tr>
+      <td><%= User.count %> users</td>
+    </tr>
+  <% User.all.order('last_active_at DESC').limit(20).each do |user| %>
+    <% next if user.is_admin? %>
+    <tr style="border-top: 1px solid #ccc;">
+      <td><%= user.name %></td>
+      <td><%= user.company %></td>
+      <td><%= user.email %></td>
+      <td><%= user.api_key %></td>
+      <td><%= time_ago_in_words(user.last_active_at) if user.last_active_at %>&nbsp;</td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+<hr>
+<br>
+<div style="padding: 20px;">
+  <div>
+    <div style="display: inline-block; width: 49%; vertical-align: top;">
+      API Key
+      <br>
+      <div><%= current_user.api_key %></div>
+      <br><br>
+      Search:
+      <br>
+      <textarea rows="1" style="padding: 10px; width: 400px;" id="search" placeholder="eg. status=200" /></textarea>
+      <input style="padding: 9px; vertical-align: top;" value="Go" type="button" id="submit" />
+    </div>
+    <div style="display: inline-block; width: 49%; vertical-align: top;">
+      <div style="margin-top: -40px;">
+        <div style="background-color: white; height: 40px; position: relative; top: 0; z-index: 1"></div>
+        <iframe style="border: 0; width: 400px; height: 155px; overflow: hidden; margin-top: -40px;" scrolling="no" src="https://help.awklog.com/docs/installation/"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <br><br>
+  <div id="bar_chart"></div>
+  <div id="count"></div>
+  <div id="loading"></div>
+  <div id="results" style="border: 1px solid #ccc;"></div>
+</div>
+
+<div id="row_template" style="display: none;">
+  <div class="row" style="border-bottom: 1px solid #ccc; font-size: 13px; cursor: pointer;">
+    <div class="line" style="padding: 3px 10px; " onclick="rowClicked(this);">
+      <span class="left"><span class="fa fa-angle-right" style="padding-right: 5px;"></span></span>
+      <span class="right" style="float: right;"></span>
+    </div>
+    <div class="json" style="display: none;"></div>
+  </div>
+</div>
+
+
+<script>
+  const search_el = document.querySelector('#search');
+  function renderRow(json) {
+    const json_viewer = new JSONViewer();
+    const row_el = document.querySelector('#row_template .row').cloneNode(true);
+    json_viewer.showJSON(json, -1, 1);
+
+    row_el.querySelector('.line .left').innerHTML += (json.request || '[ See JSON ]');
+    const date = new Date(json.created_at);
+    let hh = date.getHours();
+    const ampm = hh >= 12 ? 'PM' : 'AM';
+    hh = hh % 12;
+    if (hh == 0) hh = 12;
+    hh = ('00' + hh).slice(-2);
+
+    const date_str =
+      ('00' + (date.getMonth() + 1)).slice(-2) + '/' +
+      ('00' + date.getDate()).slice(-2) + '/' +
+      date.getFullYear() + ' ' +
+      hh + ':' +
+      ('00' + date.getMinutes()).slice(-2) + ':' +
+      ('00' + date.getSeconds()).slice(-2) + ' ' +
+      // ('000' + date.getMilliseconds()).slice(-3) + ' ' +
+      ampm;
+    const right_column = [date_str];
+    if (search_el.value) {
+      search_el.value.replace(/[ \n]/g, '').split('|').forEach(filter => {
+        const field = filter.split('=')[0];
+        right_column.push(`${field}: ${json[field]}`);
+      });
+    }
+    row_el.querySelector('.line .right').innerHTML = right_column.reverse().join('&nbsp;'.repeat(10));
+    row_el.querySelector('.json').appendChild(json_viewer.getContainer());
+    row_el.querySelector('.json').querySelectorAll('li').forEach(el => el.onclick = liClicked)
+    document.querySelector('#results').appendChild(row_el);
+  }
+  function liClicked(el) {
+    const value_clicked = el.target.nodeName == 'SPAN';
+    const li_el = value_clicked ? el.target.parentNode : el.target;
+    const field_name = li_el.innerHTML.split(':')[0];
+    if (search_el.value) {
+      const lines = [];
+      search_el.value.split(/ ?\| ?\n?/).forEach(line => {
+        if (line.indexOf(field_name) === -1) {
+          lines.push(line);
+        }
+      });
+      search_el.value = lines.join(" | \n");
+      search_el.value += " | \n";
+      search_el.rows = search_el.value.split("\n").length;
+    }
+    search_el.value += field_name + '=';
+    if (value_clicked) {
+      search_el.value += el.target.innerHTML;
+    }
+    search_el.focus();
+  }
+  function doSearch() {
+    document.querySelector('#loading').innerHTML = 'loading...';
+    document.querySelectorAll('#results .row').forEach(el => el.remove());
+    const q = search_el.value;
+    fetch('/search?q=' + q)
+      .then(r => r.json())
+      .then(results => {
+        document.querySelector('#count').innerHTML = `Total count: ${results.count}`
+        document.querySelector('#loading').innerHTML = '';
+        results.hits.forEach(row => {
+          renderRow(row);
+        });
+        renderGraph(results.hits);
+      });
+  }
+  document.addEventListener('DOMContentLoaded', doSearch);
+  search_el.onkeyup = (e) => {
+    search_el.rows = search_el.value.split("\n").length
+  }
+  search_el.onkeydown = (e) => {
+    if (e.keyCode == 13 && !e.shiftKey) {
+      doSearch();
+      e.preventDefault();
+      return;
+    }
+    search_el.rows = search_el.value.split("\n").length + (e.keyCode == 13 ? 1 : 0);
+  }
+  document.querySelector('#submit').onclick = doSearch;
+
+  function rowClicked(row_el) {
+    if (row_el) window.current_row = row_el;
+    if (!window.current_row) return;
+    const json_el = window.current_row.parentNode.querySelector('.json');
+    json_el.style.display = json_el.style.display == 'block' ? 'none' : 'block';
+  }
+  document.onkeydown = (e) => {
+    if (e.key == 'Escape') {
+      rowClicked();
+    }
+  }
+  function renderGraph(rows) {
+    const sums = {};
+    rows.forEach(row => {
+      if (!row.time_local) return;
+      const log_time = Date.parse(row.time_local);
+      let hh = (new Date(log_time)).getHours();
+      const ampm = hh >= 12 ? 'pm' : 'am';
+      hh = hh % 12;
+      if (hh == 0) hh = 12;
+      hh = hh + ampm;
+      if (!sums[hh]) sums[hh] = 0;
+      sums[hh] += 1;
+    });
+    var trace1 = {
+      x: Object.keys(sums).reverse(),
+      y: Object.values(sums).reverse(),
+      type: 'bar',
+      // text: ['4.17 below the mean', '4.17 below the mean', '0.17 below the mean', '0.17 below the mean', '0.83 above the mean', '7.83 above the mean'],
+      marker: {
+        color: 'rgb(142,124,195)'
+      }
+    };
+
+    var data = [trace1];
+    var layout = {
+      height: 100,
+      margin: {
+        t: 5,
+        b: 25,
+        l: 20,
+        r: 0,
+      },
+      // title: 'Number of Graphs Made this Week',
+      font:{
+        family: 'Raleway, sans-serif'
+      },
+      showlegend: false,
+      xaxis: {
+        // tickangle: -45
+      },
+      yaxis: {
+        zeroline: false,
+        gridwidth: 2
+      },
+      bargap :0.02
+    };
+
+    Plotly.newPlot('bar_chart', data, layout, {displayModeBar: false});
+  }
+
+</script>
+
+<style type="text/css">
+  .line:hover {
+    background-color: #ccc;
+  }
+  li:hover {
+    background-color: #ccc;
+  }
+  li span:hover {
+    background-color: #888;
+  }
+</style>

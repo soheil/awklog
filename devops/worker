@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ssh-add -K ~/.ssh/id_rsa
+ssh -A soheil@35.222.141.21 -t "$1"

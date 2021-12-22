@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  name: MyString
+  provider: MyString
+  last_active_at: 2021-01-11 20:47:39
+  has_card_on_file: false
+  plan: MyString
+  uid: MyString
+  image: MyString
+  cancelled: false
+  company: MyString
+  phone: MyString
+  google_token: MyString
+  google_refresh_token: MyString
+  push_subscription: MyText
+
+two:
+  email: MyString
+  name: MyString
+  provider: MyString
+  last_active_at: 2021-01-11 20:47:39
+  has_card_on_file: false
+  plan: MyString
+  uid: MyString
+  image: MyString
+  cancelled: false
+  company: MyString
+  phone: MyString
+  google_token: MyString
+  google_refresh_token: MyString
+  push_subscription: MyText

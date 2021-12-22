@@ -1,0 +1,61 @@
+<div class="container">
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="row">
+    <div class="col col-login mx-auto">
+      <div class="text-center">
+        <img src="/img/log.svg" style="max-height: 5rem;">
+        <span style="font-size: 26px; font-weight: bold;">AwkLog</span>
+      </div>
+      <form class="card" action="" method="post">
+        <div class="card-body p-6">
+
+          <div class="card-title">Login</div>
+          <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
+          <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
+
+          <center>
+            <%- if devise_mapping.omniauthable? %>
+              <%- resource_class.omniauth_providers.each do |provider| %>
+                <%= link_to omniauth_authorize_path(resource_name, provider) do %>
+                  <% provider = :google if provider == :google_oauth2 %>
+                  <div class="btn btn-block btn-md btn-social btn-<%= provider %>" style="margin-bottom: 2px;">
+                    <span class="fa fa-<%= provider %>"></span> Sign in with <%= OmniAuth::Utils.camelize(provider) %>
+                  </div>
+                <% end %>
+              <% end -%>
+            <% end -%>
+          </center>
+          <hr>
+
+          <div class="form-group">
+            <!-- <label class="form-label">Email</label> -->
+            <%= f.email_field :email, class: 'form-control', autofocus: true, autocomplete: 'email', placeholder: 'Email' %>
+          </div>
+          <div class="form-group">
+            <!-- <label class="form-label">Password</label> -->
+            <%= f.password_field :password, class: 'form-control', autocomplete: 'new-password', placeholder: 'Password' %>
+          </div>
+          <div class="form-group">
+            <label class="custom-control custom-checkbox">
+              <%= f.check_box :remember_me, class: 'custom-control-input' %>
+              <span class="custom-control-label">Remember me</span>
+            </label>
+          </div>
+          <div class="form-footer">
+            <%= f.submit 'Sign in', class: 'btn btn-primary btn-block' %>
+          </div>
+        </div>
+      </form>
+      <div class="text-center text-muted">
+        <%= render 'devise/shared/links' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>
+
+<style type="text/css">
+  .card-body a {
+    text-decoration: none;
+  }
+</style>

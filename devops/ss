@@ -1,0 +1,5 @@
+if [ -z "$1" ]; then
+	ssh -i ~/.ssh/ac.pem -A soheil@34.70.236.198
+else
+	ssh -i ~/.ssh/ac.pem -A soheil@34.70.236.198 -t "$1"
+fi

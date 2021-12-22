@@ -1,0 +1,1 @@
+devops/ss "tail -f ~/awklog/current/log/production.log -n 200"

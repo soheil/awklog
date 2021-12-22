@@ -1,0 +1,7 @@
+refresh_by_city_nightly:
+  cron: "30 1 1 9 * America/Los_Angeles"
+  class: "RefreshWorker"
+  queue: "refresh"
+  retry: false
+  args:
+    noop: true

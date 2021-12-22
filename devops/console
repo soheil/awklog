@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cmd='source ~/.rvm/scripts/rvm; export RAILS_ENV=production; export PATH=$PATH:/usr/local/bin:/home/soheil/.rvm/rubies/ruby-2.5.1/bin; cd awklog'
+if [ $# -eq 1 ]; then
+  git ci 'console commit'
+  git push origin master
+  cmd="$cmd; spring stop; git pull --no-edit; bundle"
+fi
+cmd="$cmd; bundle exec rails c"
+
+./devops/worker "$cmd"

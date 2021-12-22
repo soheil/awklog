@@ -1,0 +1,1 @@
+ssh -i ~/.ssh/ac.pem -A soheil@35.225.96.254

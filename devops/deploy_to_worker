@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# V=`osascript -e 'output volume of (get volume settings)'`
+# osascript -e "set volume output volume 10"
+# say -v v k -r 720
+# osascript -e "set volume output volume $V"
+
+cd `dirname "$0"`/..
+
+eval "$(ssh-agent)"
+ssh-add -K ~/.ssh/id_rsa
+
+git commit -am 'crawler auto update'
+git pull
+git push origin master
+
+ssh -A -i ~/.ssh/id_rsa soheil@35.222.141.21 'source ~/.rvm/scripts/rvm; export PATH=$PATH:/usr/local/bin:/home/soheil/.rvm/rubies/ruby-2.5.1/bin;cd awklog;git reset --hard;git pull;RAILS_ENV=production bundle;./crawl/kill'
+
+blink
+# V=`osascript -e 'output volume of (get volume settings)'`
+# osascript -e "set volume output volume 10"
+# say -v v o -r 720
+# osascript -e "set volume output volume $V"

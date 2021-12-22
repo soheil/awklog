@@ -1,0 +1,44 @@
+<link href="/css/dashboard.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <div class="page">
+      <div class="page-single">
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+<section class="fdb-block fp-active" data-block-type="forms" data-id="2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col col-login mx-auto">
+        <div class="fdb-box">
+          <div class="row">
+            <div class="col">
+              <h3>Forgot your password?</h3>
+            </div>
+          </div>
+          <%= devise_error_messages! %>
+          <div class="row mt-4">
+            <div class="col">
+              <%= f.email_field :email, class: 'form-control', autofocus: true, autocomplete: 'email', placeholder: 'Email' %>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col">
+              <%= f.submit 'Send me reset password instructions', class: 'btn btn-primary btn-block' %>
+            </div>
+          </div>
+          <br>
+          <hr>
+          <div class="row justify-content-start mt-4" style="text-align: left;">
+            <div class="col-12 col-md-8">
+              <%= render 'devise/shared/links' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% end %>
+
+
+  </div>
+</div>
